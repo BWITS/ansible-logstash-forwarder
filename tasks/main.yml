@@ -1,17 +1,29 @@
 ---
-- include: setup-RedHat.yml
-  when: ansible_os_family == 'RedHat'
+- name: Add Elasticsearch GPG key.
+  rpm_key:
+    key: http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+    state: present
 
-- include: setup-Debian.yml
-  when: ansible_os_family == 'Debian'
+- name: Add repository logstash-forwarder
+  yum_repository:
+    name:  logstash-forwarder
+    baseurl: http://packages.elastic.co/logstashforwarder/centos
+    description: logstash-forwarder repository
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+  tags:
+    - yum_repository
+
+- name: Install logstash-forwarder.
+  yum: pkg={{ logstash-forwarder-version }} state=present
 
 # See: http://goo.gl/cz9Lnd
-# - name: Install logstash-forwarder init script.
-#   get_url:
-#     url: https://raw.github.com/elasticsearch/logstash-forwarder/master/logstash-forwarder.init
-#     dest: /etc/init.d/logstash-forwarder
-#     force: yes
-#     mode: 0655
+- name: Install logstash-forwarder init script.
+  copy:
+    src: logstash-forwarder.rpm.init
+    dest: /etc/init.d/logstash-forwarder
+    mode: 0655
 
 - name: Create logstash-forwarder configuration file.
   template:

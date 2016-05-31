@@ -1,14 +1,12 @@
 # Ansible Role: Logstash Forwarder
 
-[![Build Status](https://travis-ci.org/geerlingguy/ansible-role-logstash-forwarder.svg?branch=master)](https://travis-ci.org/geerlingguy/ansible-role-logstash-forwarder)
+[![Build Status](https://travis-ci.org/bwits/ansible-logstash-forwarder.svg?branch=master)](https://travis-ci.org/bwits/ansible-logstash-forwarder)
 
-An Ansible Role that installs Logstash Forwarder on RedHat/CentOS or Debian/Ubuntu.
+An Ansible Role that installs Logstash Forwarder on RedHat/CentOS
 
-**Note**: This role is well-tested on Debian/Ubuntu, but is still undergoing development for RedHat/CentOS. You've been warned!
+## Reference
 
-## Requirements
-
-None.
+geerlingguy/ansible-role-logstash-forwarder
 
 ## Role Variables
 
@@ -30,6 +28,10 @@ The location and filename of the SSL certificate logstash-forwarder will use to 
           - /var/log/auth.log
         fields:
           type: syslog
+      - paths:
+          - /var/log/boot.log
+        fields:
+          type: syslog
 
 Configuration of files monitored by logstash-forwarder. You can add more sets of files by adding to the list with another set of files; see `defaults/main.yml` for an example.
 
@@ -41,7 +43,7 @@ None.
 
     - hosts: all
       roles:
-        - { role: geerlingguy.logstash-forwarder }
+        - { role: bwits.logstash-forwarder tags: logstash-forwarder }
 
 ## License
 
@@ -49,4 +51,4 @@ MIT / BSD
 
 ## Author Information
 
-This role was created in 2014 by [Jeff Geerling](http://jeffgeerling.com/), author of [Ansible for DevOps](http://ansiblefordevops.com/).
+This role was originally created by [Jeff Geerling](https://github.com/geerlingguy), I updated to focus for centos system with ansible v2+ features and multiple application logs supported. 
